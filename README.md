@@ -3,6 +3,6 @@ Ce projet est inspiré du sujet fil rouge du cours OpenClassrooms [Découvrez le
 
 ## Stack
 ---------
-Language: Python
-Framework: Django
-Deployment: (TBD)
+- Language: Python
+- Framework: Django
+- Deployment: (TBD)

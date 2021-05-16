@@ -16,13 +16,12 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-
-from disquaire_project.store import views
+from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('', views.index),
     path('store/', include('store.urls')),
     path('admin/', admin.site.urls),
+    path('', RedirectView.as_view(url='store/')),
 ]
 
 if settings.DEBUG:

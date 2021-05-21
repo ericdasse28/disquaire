@@ -25,4 +25,8 @@ def detail(request, album_id):
 
 
 def search(request):
-    pass
+    obj = str(request.GET)
+    query = request.GET['query']
+    message = "propriété GET : {} et requête : {}".format(obj, query)
+
+    return HttpResponse(message)

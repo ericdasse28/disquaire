@@ -22,3 +22,7 @@ def detail(request, album_id):
     message = "Le nom de l'album est {}. Il a été écrit par {}".format(album['name'], artists)
 
     return HttpResponse(message)
+
+
+def search(request):
+    pass

@@ -46,4 +46,4 @@ def search(request):
                 </ul>
             """.format("\n".join(albums))
 
-        return HttpResponse(message)
+    return HttpResponse(message)

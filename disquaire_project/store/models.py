@@ -16,3 +16,8 @@ class Album(models.Model):
     available = models.BooleanField(default=True)
     title = models.CharField(max_length=200)
     picture = models.URLField()
+
+
+class Booking(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    contacted = models.BooleanField(default=False)

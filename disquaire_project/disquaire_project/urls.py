@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
+from disquaire_project.store import views
+
 urlpatterns = [
     path('store/', include('store.urls')),
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='store/')),
+    path('', views.index),
 ]
 
 if settings.DEBUG:

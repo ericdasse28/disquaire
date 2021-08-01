@@ -19,10 +19,10 @@ def listing(request):
 
 def detail(request, album_id):
     a_id = int(album_id)  # Make sure we have an integer
-    album = ALBUMS[a_id]  # Get the album with its id
-    artists = " ".join([artist['name'] for artist in album['artists']])  # Grab artists name and
+    album = Album.objects.get(pk=album_id)  # Get the album with its id
+    artists = " ".join([artist.name for artist in album.artists.all()])  # Grab artists name and
     # create a string out of it.
-    message = "Le nom de l'album est {}. Il a été écrit par {}".format(album['name'], artists)
+    message = "Le nom de l'album est {}. Il a été écrit par {}".format(album.title, artists)
 
     return HttpResponse(message)
 

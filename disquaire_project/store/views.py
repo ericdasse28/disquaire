@@ -31,17 +31,17 @@ def search(request):
     query = request.GET.get('query')
 
     if not query:
-        message = "Aucun artiste n'est demandé"
+        albums = Album.objects.all()
     else:
-        albums = [
-            album for album in ALBUMS
-            if query in " ".join(artist['name'] for artist in album['artists'])
-        ]
+        albums = Album.objects.filter(title__icontains=query)
 
-        if len(albums) == 0:
-            message = "Misère de misère, nous n'avons trouvé aucun résultat !"
+        if not albums.exists():
+            albums = Album.objects.filter(artists__name__icontains=query)
+
+        if not albums.exists():
+            message = "Misère de misère ! Nous n'avons trouvé aucun résultat"
         else:
-            albums = ["<li>{}</li>".format(album['name']) for album in ALBUMS]
+            albums = ["<li>{}</li>".format(album.title) for album in albums]
             message = """
                 Nous avons trouvé les albums correspondant à votre requête ! Les voici :
                 <ul>

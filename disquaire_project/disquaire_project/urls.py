@@ -16,9 +16,8 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from ..store import views
 
-from disquaire_project.store import views
 
 urlpatterns = [
     path('store/', include('store.urls')),

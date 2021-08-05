@@ -1,1 +1,5 @@
-On ne me laisse pas entrer par la porte ? J'entre par la fenêtre !
+<ul>
+    {% for album in albums %}
+        <li>{{ album.title }}</li>
+    {% endfor %}
+</ul>

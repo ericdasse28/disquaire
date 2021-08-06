@@ -24,7 +24,7 @@ def listing(request):
         'albums': albums
     }
 
-    return HttpResponse(message)
+    return render(request, 'store/listing.html', context)
 
 
 def detail(request, album_id):

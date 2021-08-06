@@ -41,6 +41,8 @@ def detail(request, album_id):
         'thumbnail': album.picture
     }
 
+    hellfest
+
     return render(request, 'store/detail.html', context)
 
 

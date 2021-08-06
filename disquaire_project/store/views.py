@@ -42,7 +42,7 @@ def detail(request, album_id):
         'thumbnail': album.picture
     }
 
-    return HttpResponse(message)
+    return render(request, 'store/detail.html', context)
 
 
 def search(request):

@@ -1,0 +1,8 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+    <h3>{{ album_title }}</h3>
+    <img src="{{ thumbnail }}" alt="{{ album_title }}" class="img-responsive">
+    <small>Id: {{ album_id }}</small>
+    <p>Artists: {{ artists_name }}</p>
+{% endfor %}

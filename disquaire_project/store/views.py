@@ -72,4 +72,4 @@ def search(request):
         'title': title
     }
 
-    return HttpResponse(message)
+    return render(request, 'store/search.html', context)

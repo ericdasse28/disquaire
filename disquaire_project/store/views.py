@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Album, Artist, Contact, Booking
 
 
@@ -28,7 +28,7 @@ def listing(request):
 
 def detail(request, album_id):
     a_id = int(album_id)  # Make sure we have an integer
-    album = Album.objects.get(pk=album_id)  # Get the album with its id
+    album = get_object_or_404(Album, pk=a_id)  # Get the album with its id
     artists = " ".join([artist.name for artist in album.artists.all()])  # Grab artists name and
     artists_name = " ".join(artists)
     # create a string out of it.
@@ -40,8 +40,6 @@ def detail(request, album_id):
         'album_id': album.id,
         'thumbnail': album.picture
     }
-
-    hellfest
 
     return render(request, 'store/detail.html', context)
 

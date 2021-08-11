@@ -35,12 +35,9 @@ def listing(request):
 
 
 def detail(request, album_id):
-    a_id = int(album_id)  # Make sure we have an integer
-    album = get_object_or_404(Album, pk=a_id)  # Get the album with its id
-    artists = " ".join([artist.name for artist in album.artists.all()])  # Grab artists name and
+    album = get_object_or_404(Album, pk=album_id)
+    artists = [artist.name for artist in album.artists.all()]
     artists_name = " ".join(artists)
-    # create a string out of it.
-    message = "Le nom de l'album est {}. Il a été écrit par {}".format(album.title, artists)
 
     context = {
         'album_title': album.title,
@@ -49,7 +46,34 @@ def detail(request, album_id):
         'thumbnail': album.picture
     }
 
-    return render(request, 'store/detail.html', context)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+
+        contact = Contact.objects.filter(email=email)
+        if not contact.exists():
+            # If a contact is not registered, create a new one.
+            contact = Contact.objects.create(
+                email=email,
+                name=name
+            )
+
+        # If no album matches the id, it means the form must have been tweaked
+        # so returning a 404 is the best solution
+        album = get_object_or_404(Album, id=album_id)
+        booking = Booking.objects.create(
+            contact=contact,
+            album=album
+        )
+
+        # Make sure no one can book the album again
+        album.available = False
+        album.save()
+        context = {
+            'album_title': album.title
+        }
+
+        return render(request, 'store/merci.html', context)
 
 
 def search(request):

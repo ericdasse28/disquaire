@@ -16,6 +16,7 @@
     <h2 class="text-center artist_name">Réserver {{ album_title }}</h2>
     <p style="margin-bottom: 20px;">Demandez-nous de mettre de côté {{ album_title }} et venez le chercher dès demain en magasin !</p>
     <form action="{% url 'store:detail' album_id=album_id %}" class="form-inline" method="post">
+        {% csrf_token %}
         <div class="form-group">
             <label for="name" class="control-label">Nom</label>
             <input type="text" name="name" value="" id="name">

@@ -28,5 +28,15 @@
 
         <button type="submit" class="btn btn-success">Réserver</button>
     </form>
+
+    {% if errors %}
+    <div>
+        {% for key, error in errors %}
+        {% autoescape off %}
+            {{ error }}
+        {% endautoescape off %}
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

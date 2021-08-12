@@ -51,7 +51,8 @@ def detail(request, album_id):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            pass
+            email = form.cleaned_data['email']
+            name = form.cleaned_data['name']
         else:
             # Form data doesn't match the expected format.
             # Add errors to the template

@@ -1,5 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
+
+from .forms import ContactForm
 from .models import Album, Artist, Contact, Booking
 
 
@@ -39,13 +41,6 @@ def detail(request, album_id):
     artists = [artist.name for artist in album.artists.all()]
     artists_name = " ".join(artists)
 
-    context = {
-        'album_title': album.title,
-        'artists_name': artists_name,
-        'album_id': album.id,
-        'thumbnail': album.picture
-    }
-
     if request.method == 'POST':
         email = request.POST.get('email')
         name = request.POST.get('name')
@@ -74,6 +69,17 @@ def detail(request, album_id):
         }
 
         return render(request, 'store/merci.html', context)
+    else:
+        # GET method. Create a new form to be used in the template
+        form = ContactForm()
+
+    context = {
+        'album_title': album.title,
+        'artists_name': artists_name,
+        'album_id': album.id,
+        'thumbnail': album.picture,
+        'form': form
+    }
 
 
 def search(request):

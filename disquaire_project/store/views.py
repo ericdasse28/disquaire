@@ -39,13 +39,12 @@ def listing(request):
 def detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
     artists = [artist.name for artist in album.artists.all()]
-    artists_name = " ".join(artists)
-
+    artists_name = "\t".join(artists)
     context = {
         'album_title': album.title,
         'artists_name': artists_name,
         'album_id': album.id,
-        'thumbnail': album.picture,
+        'thumbnail': album.picture
     }
 
     if request.method == 'POST':
@@ -53,44 +52,38 @@ def detail(request, album_id):
         if form.is_valid():
             email = form.cleaned_data['email']
             name = form.cleaned_data['name']
-        else:
-            # Form data doesn't match the expected format.
-            # Add errors to the template
-            context['errors'] = form.errors.items()
 
-        email = request.POST.get('email')
-        name = request.POST.get('name')
+            contact = Contact.objects.filter(email=email)
+            if not contact.exists():
+                # If a contact is not registered, create a new one
+                contact = Contact.objects.create(
+                    email=email,
+                    name=name
+                )
+            else:
+                contact = contact.first()
 
-        contact = Contact.objects.filter(email=email)
-        if not contact.exists():
-            # If a contact is not registered, create a new one.
-            contact = Contact.objects.create(
-                email=email,
-                name=name
+            album = get_object_or_404(Album, id=album_id)
+            booking = Booking.objects.create(
+                contact=contact,
+                album=album
             )
 
-        # If no album matches the id, it means the form must have been tweaked
-        # so returning a 404 is the best solution
-        album = get_object_or_404(Album, id=album_id)
-        booking = Booking.objects.create(
-            contact=contact,
-            album=album
-        )
+            album.available = False
+            album.save()
+            context = {
+                'album_title': album.title
+            }
 
-        # Make sure no one can book the album again
-        album.available = False
-        album.save()
-        context = {
-            'album_title': album.title
-        }
-
-        return render(request, 'store/merci.html', context)
+            return render(request, 'store/merci.html', context)
+        else:
+            # Form data doesn't match the expected format
+            # Add errors to the template
+            context['errors'] = form.errors.items()
     else:
-        # GET method. Create a new form to be used in the template
         form = ContactForm()
 
     context['form'] = form
-
     return render(request, 'store/detail.html', context)
 
 

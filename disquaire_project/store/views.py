@@ -41,6 +41,13 @@ def detail(request, album_id):
     artists = [artist.name for artist in album.artists.all()]
     artists_name = " ".join(artists)
 
+    context = {
+        'album_title': album.title,
+        'artists_name': artists_name,
+        'album_id': album.id,
+        'thumbnail': album.picture,
+    }
+
     if request.method == 'POST':
         email = request.POST.get('email')
         name = request.POST.get('name')
@@ -73,13 +80,9 @@ def detail(request, album_id):
         # GET method. Create a new form to be used in the template
         form = ContactForm()
 
-    context = {
-        'album_title': album.title,
-        'artists_name': artists_name,
-        'album_id': album.id,
-        'thumbnail': album.picture,
-        'form': form
-    }
+    context['form'] = form
+
+    return render(request, 'store/detail.html', context)
 
 
 def search(request):

@@ -17,11 +17,11 @@
     <p style="margin-bottom: 20px;">Demandez-nous de mettre de côté {{ album_title }} et venez le chercher dès demain en magasin !</p>
     <form action="{% url 'store:detail' album_id=album_id %}" class="form-inline" method="post">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group {% if form.name.errors %}has-warning has-feedback{% endif %}">
             <label for="name" class="control-label">Nom</label>
             {{ forms.name }}
         </div>
-        <div class="form-group">
+        <div class="form-group {% if form.email.errors %}has-warning has-feedback{% endif %}">
             <label for="email" class="control-label">E-mail</label>
             {{ forms.email }}
         </div>

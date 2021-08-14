@@ -40,41 +40,46 @@ def detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
     artists_name = " ".join([artist for artist in album.artists.all()])
 
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        name = request.POST.get('name')
-
-        contact = Contact.objects.filter(email=email)
-        if not contact.exists():
-            # If a contact is not registered, create a new one
-            contact = Contact.objects.create(
-                email=email,
-                name=name
-            )
-
-        album = get_object_or_404(Album, id=album_id)
-        booking = Booking.objects.create(
-            contact=contact,
-            album=album
-        )
-
-        album.available = False
-        album.save()
-        context = {
-            'album_title': album.title
-        }
-
-        return render(request, 'store/merci.html', context)
-    else:
-        form = ContactForm()
-
     context = {
         'album_title': album.title,
         'artists_name': artists_name,
         'album_id': album.id,
         'thumbnail': album.picture,
-        'form': form
     }
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            name = request.POST.get('name')
+
+            contact = Contact.objects.filter(email=email)
+            if not contact.exists():
+                # If a contact is not registered, create a new one
+                contact = Contact.objects.create(
+                    email=email,
+                    name=name
+                )
+
+            album = get_object_or_404(Album, id=album_id)
+            booking = Booking.objects.create(
+                contact=contact,
+                album=album
+            )
+
+            album.available = False
+            album.save()
+            context = {
+                'album_title': album.title
+            }
+
+            return render(request, 'store/merci.html', context)
+        else:
+            context['errors'] = form.errors.items()
+    else:
+        form = ContactForm()
+
+    context['form'] = form
 
     return render(request, 'store/detail.html', context)
 

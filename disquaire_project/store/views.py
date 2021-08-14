@@ -65,12 +65,15 @@ def detail(request, album_id):
         }
 
         return render(request, 'store/merci.html', context)
+    else:
+        form = ContactForm()
 
     context = {
         'album_title': album.title,
         'artists_name': artists_name,
         'album_id': album.id,
-        'thumbnail': album.picture
+        'thumbnail': album.picture,
+        'form': form
     }
 
     return render(request, 'store/detail.html', context)

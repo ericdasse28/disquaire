@@ -31,13 +31,13 @@
     </form>
 
     {% if errors %}
-    <div>
-        {% for key, error in errors %}
-        {% autoescape off %}
-            {{ error }}
-        {% endautoescape off %}
-        {% endfor %}
-    </div>
+        <div>
+            {% for key, error in errors %}
+            {% autoescape off %}
+                {{ error }}
+            {% endautoescape %}
+            {% endfor %}
+        </div>
     {% endif %}
 </div>
 {% endblock %}

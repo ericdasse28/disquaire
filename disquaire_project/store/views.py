@@ -38,13 +38,14 @@ def listing(request):
 
 def detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
-    artists_name = " ".join([artist.name for artist in album.artists.all()])
+    artists = [artist.name for artist in album.artists.all()]
+    artists_name = " ".join(artists)
 
     context = {
         'album_title': album.title,
         'artists_name': artists_name,
         'album_id': album.id,
-        'thumbnail': album.picture,
+        'thumbnail': album.picture
     }
 
     if request.method == 'POST':
@@ -55,7 +56,6 @@ def detail(request, album_id):
 
             contact = Contact.objects.filter(email=email)
             if not contact.exists():
-                # If a contact is not registered, create a new one
                 contact = Contact.objects.create(
                     email=email,
                     name=name
@@ -77,12 +77,13 @@ def detail(request, album_id):
 
             return render(request, 'store/merci.html', context)
         else:
+            # Form data doesn't match the expected format
+            # Add errors to the template
             context['errors'] = form.errors.items()
     else:
         form = ContactForm()
 
     context['form'] = form
-
     return render(request, 'store/detail.html', context)
 
 

@@ -50,8 +50,8 @@ def detail(request, album_id):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            email = request.POST.get('email')
-            name = request.POST.get('name')
+            email = form.cleaned_data['email']
+            name = form.cleaned_data['name']
 
             contact = Contact.objects.filter(email=email)
             if not contact.exists():
@@ -60,6 +60,8 @@ def detail(request, album_id):
                     email=email,
                     name=name
                 )
+            else:
+                contact = contact.first()
 
             album = get_object_or_404(Album, id=album_id)
             booking = Booking.objects.create(

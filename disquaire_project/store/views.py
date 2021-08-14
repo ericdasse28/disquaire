@@ -38,7 +38,7 @@ def listing(request):
 
 def detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
-    artists_name = " ".join([artist for artist in album.artists.all()])
+    artists_name = " ".join([artist.name for artist in album.artists.all()])
 
     context = {
         'album_title': album.title,
